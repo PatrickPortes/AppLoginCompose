@@ -17,6 +17,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Lock
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Checkbox
@@ -27,6 +28,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -55,7 +57,7 @@ import com.example.applogincompose.ui.theme.AppLoginComposeTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SignInScreen() {
+fun SignUpScreen() {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -63,6 +65,8 @@ fun SignInScreen() {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
+
+        Spacer(modifier = Modifier.height(50.dp))
 
         Text(
             modifier = Modifier
@@ -82,6 +86,40 @@ fun SignInScreen() {
         //Character Count Limit on Text Field:
         val maxCharEmail = 50
         val maxCharPassword = 30
+        val maxCharUsername = 50
+
+        //UserName TextField:
+        var name by rememberSaveable { mutableStateOf("") }
+
+        OutlinedTextField(
+            modifier = Modifier
+                .fillMaxWidth(0.8f),
+            value = name,
+            onValueChange = {
+                if (it.length <= maxCharUsername) {
+                    name = it
+                }
+            },
+            placeholder = { Text(text = "Username") },
+            label = { Text(text = "Username") },
+            singleLine = true,
+            maxLines = 1,
+            leadingIcon = {
+                IconButton(onClick = { /*TODO*/ }) {
+                    Icon(
+                        imageVector = Icons.Filled.Person,
+                        contentDescription = "Person Icon"
+                    )
+                }
+            },
+            keyboardOptions = KeyboardOptions.Default.copy(
+                keyboardType = KeyboardType.Text,
+                imeAction = ImeAction.Done,
+                capitalization = KeyboardCapitalization.None
+            )
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
 
         //Email Text Field:
         var email by rememberSaveable { mutableStateOf("") }
@@ -147,14 +185,39 @@ fun SignInScreen() {
                     )
                 }
             },
-            trailingIcon = {
-                IconButton(onClick = {
-                    passwordVisibility = !passwordVisibility
-                }) {
+            visualTransformation = if (passwordVisibility) {
+                VisualTransformation.None
+            } else {
+                PasswordVisualTransformation()
+            },
+            keyboardOptions = KeyboardOptions.Default.copy(
+                keyboardType = KeyboardType.Password,
+                capitalization = KeyboardCapitalization.None
+            )
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        var passwordConfirmation by rememberSaveable { mutableStateOf("") }
+
+        OutlinedTextField(
+            modifier = Modifier
+                .fillMaxWidth(0.8f),
+            value = passwordConfirmation,
+            onValueChange = {
+                if (it.length <= maxCharPassword) {
+                    passwordConfirmation = it
+                }
+            },
+            singleLine = true,
+            maxLines = 1,
+            placeholder = { Text(text = "Confirm Password") },
+            label = { Text(text = "Confirm Password") },
+            leadingIcon = {
+                IconButton(onClick = { /*TODO*/ }) {
                     Icon(
-                        painter = icon,
-                        contentDescription = if (passwordVisibility) "Hide Password" else "Show Password",
-                        tint = Color.Gray
+                        imageVector = Icons.Filled.Lock,
+                        contentDescription = "Password Icon"
                     )
                 }
             },
@@ -169,54 +232,7 @@ fun SignInScreen() {
             )
         )
 
-        Row(
-            modifier = Modifier
-                .fillMaxWidth(0.8f),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-
-            var checked by remember { mutableStateOf(true) }
-
-            val customColors = CheckboxDefaults.colors(
-                checkedColor = Color.Black, // Change the checked color
-                uncheckedColor = Color.Gray, // Change the unchecked color
-                checkmarkColor = Color.White // Change the checkmark color
-            )
-
-            Checkbox(
-                checked = checked,
-                onCheckedChange = { checked = it },
-                colors = customColors
-            )
-
-            Text(
-                text = "Remember me",
-                style = TextStyle(
-                    fontSize = 15.sp
-                ),
-                modifier = Modifier
-                    .weight(1f)
-                    .padding(end = 10.dp)
-            )
-
-//            Spacer(modifier = Modifier.width(10.dp))
-
-            Text(
-                text = "Forgot Password?",
-                style = TextStyle(
-                    fontSize = 15.sp,
-                    color = Color.Blue,
-                    textAlign = TextAlign.End
-                ),
-                modifier = Modifier
-                    .weight(1f)
-                    .fillMaxWidth()
-                    .padding(end = 10.dp)
-            )
-
-        }
-
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.height(15.dp))
 
         //Button Login
 
@@ -230,7 +246,7 @@ fun SignInScreen() {
                 containerColor = MaterialTheme.colorScheme.onSecondaryContainer
             )
         ) {
-            Text(text = "LOGIN")
+            Text(text = "SIGN UP")
         }
 
         Spacer(modifier = Modifier.height(30.dp))
@@ -249,7 +265,7 @@ fun SignInScreen() {
                     .width(40.dp)
                     .padding(end = 5.dp)
             )
-            Text(text = "Or Login With")
+            Text(text = "Or Sign Up With")
             Divider(
                 color = Color.Gray,
                 thickness = 2.dp,
@@ -271,18 +287,18 @@ fun SignInScreen() {
             LoginButton(imageId = R.drawable.linkedin_logo, onClick = {})
         }
 
-        Spacer(modifier = Modifier.height(60.dp))
+        Spacer(modifier = Modifier.height(40.dp))
 
         //SignUp Text/Button
 
         Text(
-            text = "New User?",
+            text = "Already Have an Account?",
             modifier = Modifier
                 .padding(3.dp)
                 .wrapContentSize(Alignment.Center)
         )
         Text(
-            text = "Sign Up",
+            text = "Sign In",
             style = TextStyle(color = Color.Blue, fontSize = 15.sp),
             modifier = Modifier
                 .padding(3.dp, end = 10.dp)
@@ -298,8 +314,13 @@ fun SignInScreen() {
 
 @Preview(showBackground = true)
 @Composable
-fun SignInScreenPreview() {
+fun SignUpScreenPreview() {
     AppLoginComposeTheme {
-        SignInScreen()
+        Surface(
+            modifier = Modifier.fillMaxSize(),
+            color = MaterialTheme.colorScheme.background
+        ) {
+            SignUpScreen()
+        }
     }
 }
