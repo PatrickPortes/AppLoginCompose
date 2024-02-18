@@ -20,8 +20,6 @@ import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Checkbox
-import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -53,11 +51,14 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
+import com.example.applogincompose.navigation.Screen
 import com.example.applogincompose.ui.theme.AppLoginComposeTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SignUpScreen() {
+fun SignUpScreen(navController: NavController) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -239,7 +240,8 @@ fun SignUpScreen() {
         Button(
             modifier = Modifier
                 .fillMaxWidth(0.8f),
-            onClick = { //TODO
+            onClick = {
+                      navController.navigate(Screen.HomeScreen.route)
             },
             colors = ButtonDefaults.buttonColors(
                 contentColor = MaterialTheme.colorScheme.onPrimary,
@@ -302,7 +304,8 @@ fun SignUpScreen() {
             style = TextStyle(color = Color.Blue, fontSize = 15.sp),
             modifier = Modifier
                 .padding(3.dp, end = 10.dp)
-                .clickable { //TODO
+                .clickable {
+                    navController.navigate(Screen.SignInScreen.route)
                 }
                 .wrapContentSize(Alignment.Center)
         )
@@ -320,7 +323,7 @@ fun SignUpScreenPreview() {
             modifier = Modifier.fillMaxSize(),
             color = MaterialTheme.colorScheme.background
         ) {
-            SignUpScreen()
+            SignUpScreen(rememberNavController())
         }
     }
 }

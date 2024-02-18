@@ -51,11 +51,14 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
+import com.example.applogincompose.navigation.Screen
 import com.example.applogincompose.ui.theme.AppLoginComposeTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SignInScreen() {
+fun SignInScreen(navController: NavController) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -223,7 +226,8 @@ fun SignInScreen() {
         Button(
             modifier = Modifier
                 .fillMaxWidth(0.8f),
-            onClick = { //TODO
+            onClick = {
+                      navController.navigate(Screen.HomeScreen.route)
             },
             colors = ButtonDefaults.buttonColors(
                 contentColor = MaterialTheme.colorScheme.onPrimary,
@@ -286,7 +290,8 @@ fun SignInScreen() {
             style = TextStyle(color = Color.Blue, fontSize = 15.sp),
             modifier = Modifier
                 .padding(3.dp, end = 10.dp)
-                .clickable { //TODO
+                .clickable {
+                    navController.navigate(Screen.SignUpScreen.route)
                 }
                 .wrapContentSize(Alignment.Center)
         )
@@ -300,6 +305,6 @@ fun SignInScreen() {
 @Composable
 fun SignInScreenPreview() {
     AppLoginComposeTheme {
-        SignInScreen()
+        SignInScreen(rememberNavController())
     }
 }
