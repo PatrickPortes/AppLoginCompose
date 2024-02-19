@@ -37,6 +37,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
@@ -59,6 +60,9 @@ import com.example.applogincompose.ui.theme.AppLoginComposeTheme
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SignUpScreen(navController: NavController) {
+
+    val context = LocalContext.current
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -115,7 +119,7 @@ fun SignUpScreen(navController: NavController) {
             },
             keyboardOptions = KeyboardOptions.Default.copy(
                 keyboardType = KeyboardType.Text,
-                imeAction = ImeAction.Done,
+                imeAction = ImeAction.Next,
                 capitalization = KeyboardCapitalization.None
             )
         )
@@ -148,7 +152,7 @@ fun SignUpScreen(navController: NavController) {
             },
             keyboardOptions = KeyboardOptions.Default.copy(
                 keyboardType = KeyboardType.Email,
-                imeAction = ImeAction.Done,
+                imeAction = ImeAction.Next,
                 capitalization = KeyboardCapitalization.None
             )
         )
@@ -193,7 +197,8 @@ fun SignUpScreen(navController: NavController) {
             },
             keyboardOptions = KeyboardOptions.Default.copy(
                 keyboardType = KeyboardType.Password,
-                capitalization = KeyboardCapitalization.None
+                capitalization = KeyboardCapitalization.None,
+                imeAction = ImeAction.Next
             )
         )
 
@@ -229,7 +234,8 @@ fun SignUpScreen(navController: NavController) {
             },
             keyboardOptions = KeyboardOptions.Default.copy(
                 keyboardType = KeyboardType.Password,
-                capitalization = KeyboardCapitalization.None
+                capitalization = KeyboardCapitalization.None,
+                imeAction = ImeAction.Done
             )
         )
 
@@ -241,7 +247,42 @@ fun SignUpScreen(navController: NavController) {
             modifier = Modifier
                 .fillMaxWidth(0.8f),
             onClick = {
-                      navController.navigate(Screen.HomeScreen.route)
+
+                if (name.isNotEmpty()) {
+
+                    if (validateEmail(email)) {
+
+                        if (password.isNotEmpty()) {
+
+                            if (validatePassword(password)) {
+
+                                if (passwordConfirmation.isNotEmpty()) {
+
+                                    if (password == passwordConfirmation) {
+
+                                        navController.popBackStack()
+                                        showToast(context, "Account Created Successfully!")
+                                        navController.navigate(Screen.HomeScreen.route)
+
+                                    } else {
+                                        showToast(context, "Your Password Confirmation Needs to be the same!")
+                                    }
+                                } else {
+                                    showToast(context, "Confirm Your Password Please!")
+                                }
+                            } else {
+                                showToast(context, "Needs to contain at least one uppercase letter and one number")
+                            }
+                        } else {
+                            showToast(context, "Invalid Password!")
+                        }
+                    } else {
+                        showToast(context, "Invalid Email!")
+                    }
+                } else {
+                    showToast(context, "Enter an Username Please!")
+                }
+
             },
             colors = ButtonDefaults.buttonColors(
                 contentColor = MaterialTheme.colorScheme.onPrimary,
@@ -282,11 +323,17 @@ fun SignUpScreen(navController: NavController) {
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.Center
         ) {
-            LoginButton(imageId = R.drawable.google_logo, onClick = {})
+            LoginButton(imageId = R.drawable.google_logo, onClick = {
+                showToast(context, "Login With Google Account!")
+            })
             Spacer(modifier = Modifier.width(8.dp))
-            LoginButton(imageId = R.drawable.facebook_logo, onClick = {})
+            LoginButton(imageId = R.drawable.facebook_logo, onClick = {
+                showToast(context, "Login With Facebook Account!")
+            })
             Spacer(modifier = Modifier.width(8.dp))
-            LoginButton(imageId = R.drawable.linkedin_logo, onClick = {})
+            LoginButton(imageId = R.drawable.linkedin_logo, onClick = {
+                showToast(context, "Login With LinkedIn Account!")
+            })
         }
 
         Spacer(modifier = Modifier.height(40.dp))

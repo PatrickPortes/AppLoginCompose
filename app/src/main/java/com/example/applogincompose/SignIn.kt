@@ -37,6 +37,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
@@ -59,6 +60,9 @@ import com.example.applogincompose.ui.theme.AppLoginComposeTheme
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SignInScreen(navController: NavController) {
+
+    val context = LocalContext.current
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -112,7 +116,7 @@ fun SignInScreen(navController: NavController) {
             },
             keyboardOptions = KeyboardOptions.Default.copy(
                 keyboardType = KeyboardType.Email,
-                imeAction = ImeAction.Done,
+                imeAction = ImeAction.Next,
                 capitalization = KeyboardCapitalization.None
             )
         )
@@ -168,7 +172,8 @@ fun SignInScreen(navController: NavController) {
             },
             keyboardOptions = KeyboardOptions.Default.copy(
                 keyboardType = KeyboardType.Password,
-                capitalization = KeyboardCapitalization.None
+                capitalization = KeyboardCapitalization.None,
+                imeAction = ImeAction.Done
             )
         )
 
@@ -215,6 +220,9 @@ fun SignInScreen(navController: NavController) {
                     .weight(1f)
                     .fillMaxWidth()
                     .padding(end = 10.dp)
+                    .clickable {
+                        showToast(context,"Recovering Password!")
+                    }
             )
 
         }
@@ -227,7 +235,20 @@ fun SignInScreen(navController: NavController) {
             modifier = Modifier
                 .fillMaxWidth(0.8f),
             onClick = {
-                      navController.navigate(Screen.HomeScreen.route)
+
+                if (email.isNotEmpty()){
+                    if (password.isNotEmpty()){
+
+                        navController.popBackStack()
+                        navController.navigate(Screen.HomeScreen.route)
+
+                    } else {
+                        showToast(context, "Incorrect Password!")
+                    }
+                } else {
+                    showToast(context, "Incorrect Email!")
+                }
+
             },
             colors = ButtonDefaults.buttonColors(
                 contentColor = MaterialTheme.colorScheme.onPrimary,
@@ -268,11 +289,17 @@ fun SignInScreen(navController: NavController) {
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.Center
         ) {
-            LoginButton(imageId = R.drawable.google_logo, onClick = {})
+            LoginButton(imageId = R.drawable.google_logo, onClick = {
+                showToast(context, "Login With Google Account!")
+            })
             Spacer(modifier = Modifier.width(8.dp))
-            LoginButton(imageId = R.drawable.facebook_logo, onClick = {})
+            LoginButton(imageId = R.drawable.facebook_logo, onClick = {
+                showToast(context, "Login With Facebook Account!")
+            })
             Spacer(modifier = Modifier.width(8.dp))
-            LoginButton(imageId = R.drawable.linkedin_logo, onClick = {})
+            LoginButton(imageId = R.drawable.linkedin_logo, onClick = {
+                showToast(context, "Login With LinkedIn Account!")
+            })
         }
 
         Spacer(modifier = Modifier.height(60.dp))
