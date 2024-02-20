@@ -1,4 +1,4 @@
-package com.example.applogincompose
+package com.example.applogincompose.util
 
 fun validateEmail(email: String): Boolean {
     val emailRegex = Regex("[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}")

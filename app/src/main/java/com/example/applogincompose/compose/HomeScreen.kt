@@ -1,5 +1,6 @@
-package com.example.applogincompose
+package com.example.applogincompose.compose
 
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -30,7 +31,7 @@ fun HomeScreen(){
                 Text(
                     text = "Home Screen",
                     style = TextStyle(
-                        color = Color.Black,
+                        color = if(isSystemInDarkTheme()) Color.White else Color.Black,
                         fontWeight = FontWeight.Bold,
                         fontSize = MaterialTheme.typography.displayLarge.fontSize,
                         textAlign = TextAlign.Center

@@ -4,10 +4,10 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.applogincompose.AnimatedSplashScreen
-import com.example.applogincompose.HomeScreen
-import com.example.applogincompose.SignInScreen
-import com.example.applogincompose.SignUpScreen
+import com.example.applogincompose.compose.AnimatedSplashScreen
+import com.example.applogincompose.compose.HomeScreen
+import com.example.applogincompose.compose.SignInScreen
+import com.example.applogincompose.compose.SignUpScreen
 
 @Composable
 fun Navigation() {

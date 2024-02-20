@@ -1,4 +1,4 @@
-package com.example.applogincompose
+package com.example.applogincompose.compose
 
 import android.content.res.Configuration
 import androidx.compose.animation.core.animateFloatAsState
@@ -32,6 +32,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.example.applogincompose.R
 import com.example.applogincompose.navigation.Screen
 import kotlinx.coroutines.delay
 

@@ -1,23 +1,14 @@
 package com.example.applogincompose.data
 
-class UserRepository(private val dao: UserDao) {
+import kotlinx.coroutines.flow.Flow
 
-    val users = dao.getAllUsers()
+interface Repository {
 
-    suspend fun addUser(user: User): Long{
-        return dao.insertUser(user)
-    }
+    suspend fun insert(user: User)
 
-    suspend fun update(user: User): Int{
-        return dao.updateUser(user)
-    }
+    suspend fun delete(user: User)
 
-    suspend fun delete(user: User): Int{
-        return dao.deleteUser(user)
-    }
+    suspend fun update(user: User)
 
-    suspend fun deleteAll(): Int{
-        return dao.deleteAll()
-    }
-
+    suspend fun getAllUsers(): Flow<List<User>>
 }

@@ -1,28 +1,26 @@
 package com.example.applogincompose.data
 
-import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface UserDao {
 
-    @Insert
-    suspend fun insertUser(user: User): Long
-
-    @Update
-    suspend fun updateUser(user: User): Int
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insert(user: User)
 
     @Delete
-    suspend fun deleteUser(user: User): Int
+    suspend fun delete(user: User)
 
-    @Query("DELETE FROM user_data_table")
-    suspend fun deleteAll(): Int
+    @Update
+    suspend fun update(user: User)
 
     @Query("SELECT * FROM user_data_table")
-    fun getAllUsers(): LiveData<List<User>>
+    fun getAllUsers(): Flow<List<User>>
 
 }

@@ -1,4 +1,4 @@
-package com.example.applogincompose
+package com.example.applogincompose.compose
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -54,6 +54,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.applogincompose.R
 import com.example.applogincompose.navigation.Screen
 import com.example.applogincompose.ui.theme.AppLoginComposeTheme
 

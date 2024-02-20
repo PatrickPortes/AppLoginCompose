@@ -1,4 +1,4 @@
-package com.example.applogincompose
+package com.example.applogincompose.compose
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable

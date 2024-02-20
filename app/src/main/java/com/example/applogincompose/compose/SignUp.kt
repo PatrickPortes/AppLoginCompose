@@ -1,5 +1,6 @@
-package com.example.applogincompose
+package com.example.applogincompose.compose
 
+import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -52,16 +53,24 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.applogincompose.R
+import com.example.applogincompose.UserViewModel
+import com.example.applogincompose.data.User
 import com.example.applogincompose.navigation.Screen
 import com.example.applogincompose.ui.theme.AppLoginComposeTheme
+import com.example.applogincompose.util.validateEmail
+import com.example.applogincompose.util.validatePassword
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SignUpScreen(navController: NavController) {
 
     val context = LocalContext.current
+
+    val viewModel = hiltViewModel<UserViewModel>()
 
     Column(
         modifier = Modifier
@@ -260,8 +269,18 @@ fun SignUpScreen(navController: NavController) {
 
                                     if (password == passwordConfirmation) {
 
-                                        navController.popBackStack()
+                                        val newUser = User(
+                                            userName = name,
+                                            email = email,
+                                            password = password
+                                        )
+
+                                        viewModel.insertUser(newUser)
+
                                         showToast(context, "Account Created Successfully!")
+                                        Log.i("MyTag", "User Successfully Created: Name: $name \n Email: $email \n Password: $password")
+
+                                        navController.popBackStack()
                                         navController.navigate(Screen.HomeScreen.route)
 
                                     } else {

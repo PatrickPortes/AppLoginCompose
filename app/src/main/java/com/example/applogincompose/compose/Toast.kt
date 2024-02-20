@@ -1,4 +1,4 @@
-package com.example.applogincompose
+package com.example.applogincompose.compose
 
 import android.content.Context
 import android.widget.Toast
