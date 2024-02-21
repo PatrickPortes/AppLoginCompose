@@ -2,6 +2,7 @@ package com.example.applogincompose.data
 
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
@@ -26,9 +27,9 @@ class RepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getAllUsers(): Flow<List<User>> {
-        return withContext(IO) {
-            dao.getAllUsers()
+    override suspend fun getUserByEmailAndPassword(email: String, password: String): User? {
+        return withContext(IO){
+            dao.getUserByEmailAndPassword(email, password)
         }
     }
 

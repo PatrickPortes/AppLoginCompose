@@ -1,7 +1,5 @@
 package com.example.applogincompose.data
 
-import kotlinx.coroutines.flow.Flow
-
 interface Repository {
 
     suspend fun insert(user: User)
@@ -10,5 +8,5 @@ interface Repository {
 
     suspend fun update(user: User)
 
-    suspend fun getAllUsers(): Flow<List<User>>
+    suspend fun getUserByEmailAndPassword(email: String, password: String): User?
 }

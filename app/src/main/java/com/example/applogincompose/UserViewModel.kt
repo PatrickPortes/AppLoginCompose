@@ -1,5 +1,7 @@
 package com.example.applogincompose
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.applogincompose.data.Repository
@@ -18,6 +20,12 @@ class UserViewModel @Inject constructor(
         viewModelScope.launch(IO) {
             repository.insert(user)
         }
+    }
+
+    // Function to authenticate user
+    suspend fun authenticateUser(email: String, password: String): Boolean {
+        val user = repository.getUserByEmailAndPassword(email, password)
+        return user != null
     }
 
 }

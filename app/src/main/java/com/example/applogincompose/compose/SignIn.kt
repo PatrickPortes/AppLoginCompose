@@ -1,5 +1,7 @@
 package com.example.applogincompose.compose
 
+import android.content.res.Configuration
+import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -27,8 +29,10 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -52,17 +56,24 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.applogincompose.R
+import com.example.applogincompose.UserViewModel
+import com.example.applogincompose.navigation.Navigation
 import com.example.applogincompose.navigation.Screen
 import com.example.applogincompose.ui.theme.AppLoginComposeTheme
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SignInScreen(navController: NavController) {
 
     val context = LocalContext.current
+
+    val viewModel = hiltViewModel<UserViewModel>()
 
     Column(
         modifier = Modifier
@@ -208,8 +219,6 @@ fun SignInScreen(navController: NavController) {
                     .padding(end = 10.dp)
             )
 
-//            Spacer(modifier = Modifier.width(10.dp))
-
             Text(
                 text = "Forgot Password?",
                 style = TextStyle(
@@ -222,7 +231,7 @@ fun SignInScreen(navController: NavController) {
                     .fillMaxWidth()
                     .padding(end = 10.dp)
                     .clickable {
-                        showToast(context,"Recovering Password!")
+                        showToast(context, "Recovering Password!")
                     }
             )
 
@@ -237,17 +246,30 @@ fun SignInScreen(navController: NavController) {
                 .fillMaxWidth(0.8f),
             onClick = {
 
-                if (email.isNotEmpty()){
-                    if (password.isNotEmpty()){
+                if (email.isNotEmpty()) {
+                    if (password.isNotEmpty()) {
 
-                        navController.popBackStack()
-                        navController.navigate(Screen.HomeScreen.route)
+                        viewModel.viewModelScope.launch {
+                            val isAuthenticated = viewModel.authenticateUser(email, password)
+                            if (isAuthenticated) {
+
+                                //Login Successful:
+                                showToast(context, "SignIn Successfully!")
+                                Log.i("MyTag", "User SignIn Successfully: Email: $email \n Password: $password")
+                                navController.popBackStack()
+                                navController.navigate(Screen.HomeScreen.route)
+
+                            } else {
+                                //Login Invalid:
+                                showToast(context, "Invalid Email or Password!")
+                            }
+                        }
 
                     } else {
-                        showToast(context, "Incorrect Password!")
+                        showToast(context, "Enter an Password!")
                     }
                 } else {
-                    showToast(context, "Incorrect Email!")
+                    showToast(context, "Enter an Email!")
                 }
 
             },
@@ -331,8 +353,27 @@ fun SignInScreen(navController: NavController) {
 
 @Preview(showBackground = true)
 @Composable
-fun SignInScreenPreview() {
+fun SignInScreenPreviewDayMode() {
     AppLoginComposeTheme {
-        SignInScreen(rememberNavController())
+        Surface(
+            modifier = Modifier.fillMaxSize(),
+            color = MaterialTheme.colorScheme.background
+        ) {
+            SignInScreen(rememberNavController())
+        }
+    }
+}
+
+
+@Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Composable
+fun SignInScreenPreviewNightMode() {
+    AppLoginComposeTheme {
+        Surface(
+            modifier = Modifier.fillMaxSize(),
+            color = MaterialTheme.colorScheme.background
+        ) {
+            SignInScreen(rememberNavController())
+        }
     }
 }

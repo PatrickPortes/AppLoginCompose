@@ -20,7 +20,6 @@ interface UserDao {
     @Update
     suspend fun update(user: User)
 
-    @Query("SELECT * FROM user_data_table")
-    fun getAllUsers(): Flow<List<User>>
-
+    @Query("SELECT * FROM user_data_table WHERE user_email = :email AND user_password = :password")
+    suspend fun getUserByEmailAndPassword(email: String, password: String): User?
 }

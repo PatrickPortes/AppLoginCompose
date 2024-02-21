@@ -1,5 +1,6 @@
 package com.example.applogincompose.compose
 
+import android.content.res.Configuration
 import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -383,7 +384,20 @@ fun SignUpScreen(navController: NavController) {
 
 @Preview(showBackground = true)
 @Composable
-fun SignUpScreenPreview() {
+fun SignUpScreenPreviewDayMode() {
+    AppLoginComposeTheme {
+        Surface(
+            modifier = Modifier.fillMaxSize(),
+            color = MaterialTheme.colorScheme.background
+        ) {
+            SignUpScreen(rememberNavController())
+        }
+    }
+}
+
+@Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Composable
+fun SignUpScreenPreviewNightMode() {
     AppLoginComposeTheme {
         Surface(
             modifier = Modifier.fillMaxSize(),
